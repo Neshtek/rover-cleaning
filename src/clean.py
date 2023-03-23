@@ -1,6 +1,7 @@
 from .util import keyboard_shutdown
-import time
+from time import sleep
 import math
+from .Rover import Rover
 
 length = 45
 breadth = 30
@@ -23,61 +24,59 @@ def changeDirection(rover, angle):
     rover.changeYaw(angle=angle,speed=0.02)
 
 
-def changeLane(rover):
-    
+def change_lane(rover:Rover):
     print("Changing Lane")
-    time.sleep(1)
-    H = math.sqrt(((length/2)**2)+(breadth**2))
-    theta = math.atan((breadth)/(length/2))
+    sleep(1)
+    # Calculated values for lane change diagonal distance
+    hypotenuse_dist = math.sqrt(((length/2) ** 2) + (breadth ** 2))
+    # Calculated angle for lane change
+    theta = math.atan((length/2) / breadth)
 
     try:
-        while(True):
-            
-            moveF_L(rover,spd=2, d=int((length/2)))
+        while True:
+            rover.move_forward_dist(speed=2, dist=(length/2))
             print("moving forward2")
-            time.sleep(1)
-            changeDirection(rover, theta)
+            sleep(1)
+            rover.change_yaw(angle=-(theta))
             print("changing direction")
-            time.sleep(1)
+            sleep(1)
     
-            # Lane End
-            if (rover.ul_front_edge.checkDriveOk() == True):
-                print("Lane End")
-                changeDirection(rover, -theta)
-                print("changing direction !Lane end")
-                moveB_L(rover,spd=2, d=int((length/2)))
+            # No Further Lanes
+            if rover.front_edge.check_drive_ok() == False:
+                print("No Further Lanes")
+                rover.change_yaw(angle=theta)
+                print("changing direction due to no lanes!")
+                rover.move_backward_dist(speed=2, dist=(length/2))
                 print("moving back4")
-                print("docking called")
-                dock(rover=rover)
+                print("odometry called")
             
+            # Available Lanes
             else:
-                moveF_L(rover,spd=2, d=int((H)))
+                rover.move_forward_dist(speed=2, dist=hypotenuse_dist)
                 print("moving forward2")
-                changeDirection(rover, (-theta))
-                moveB_L(rover,spd=2, d=int((3*length)/2))
+                rover.change_yaw(angle=theta)
+                rover.move_backward_dist(speed=2, dist=length)
                 print("moving back3")
-                break
+                return
 
     except KeyboardInterrupt:
         keyboard_shutdown()
 
-
-def sweep(rover):
-    print("Sweeeping")
-    time.sleep(1)
+def sweep(rover:Rover):
+    print("Sweeping")
+    sleep(1)
     try:
-        while(rover.ul_front_edge.checkDriveOk() == False):
-            
+        while(rover.front_edge.check_drive_ok() == True):
             moveF(rover=rover,spd=2)
             print("moving forward1")
-            time.sleep(1)
+            sleep(1)
 
-        while (rover.ul_back_edge.checkDriveOk() == False):
+        while (rover.back_edge.check_drive_ok() == True):
             moveB(rover=rover,spd=2)
             print("moving back3")
-            time.sleep(1)
+            sleep(1)
             
-        changeLane(rover=rover)
+        change_lane(rover=rover)
         sweep(rover=rover)
 
     except KeyboardInterrupt:
@@ -90,7 +89,7 @@ def cleanArea(rover):
     rover.workingStatus = True
     rover.setupAndArm()
     rover.changeVehicleMode('GUIDED')
-    time.sleep(2)
+    sleep(2)
     
     try:
         moveF_L(rover,spd=2, d=int((length)))
@@ -100,12 +99,12 @@ def cleanArea(rover):
         while(True):
             moveB(rover,spd=2)
             print("moving back1")
-            time.sleep(1)
+            sleep(1)
 
             if (rover.ul_back_edge.checkDriveOk() == True):
                 changeDirection(rover, 90)
                 print("Orienting to corner")
-                time.sleep(1)
+                sleep(1)
 
             moveB(rover,spd=2)
             print("moving back1")
@@ -117,6 +116,3 @@ def cleanArea(rover):
     
     except KeyboardInterrupt:
         keyboard_shutdown()
-
-def dock(rover):
-    print("Docking")

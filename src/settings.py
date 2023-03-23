@@ -1,11 +1,11 @@
-def getserial():
-    cpuserial = "ERROR000000000"
+def get_serial():
+    cpu_serial = "ERROR000000000"
     try:
         f = open('/proc/cpuinfo', 'r')
         for line in f:
             if line[0:6] == 'Serial':
-                cpuserial = line[10:26]
+                cpu_serial = line[10:26]
         f.close()
     except:
-        cpuserial = "ERROR000000000"
-    return cpuserial
+        cpu_serial = "ERROR000000000"
+    return cpu_serial
