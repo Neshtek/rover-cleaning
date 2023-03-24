@@ -12,7 +12,7 @@ def change_lane(rover:Rover):
     # Calculated values for lane change diagonal distance
     hypotenuse_dist = math.sqrt(((length/2) ** 2) + (breadth ** 2))
     # Calculated angle for lane change
-    theta = math.atan((length/2) / breadth)
+    theta = math.atan(breadth / (length/2))
 
     try:
         while True:
