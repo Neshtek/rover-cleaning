@@ -6,24 +6,6 @@ from .Rover import Rover
 length = 45
 breadth = 30
 
-#True = edge detected
-
-def moveF(rover, spd):
-    rover.moveForward(speed=spd)
-
-def moveB(rover, spd):
-    rover.moveBackward(speed=spd)
-
-def moveF_L(rover, spd, d):
-    rover.moveForward_L(speed=spd,d=d)
-
-def moveB_L(rover, spd, d):
-    rover.moveBackward_L(speed=spd,d=d)
-
-def changeDirection(rover, angle):
-    rover.changeYaw(angle=angle,speed=0.02)
-
-
 def change_lane(rover:Rover):
     print("Changing Lane")
     sleep(1)
@@ -66,14 +48,20 @@ def sweep(rover:Rover):
     print("Sweeping")
     sleep(1)
     try:
-        while(rover.front_edge.check_drive_ok() == True):
-            moveF(rover=rover,spd=2)
+        while True:
+            rover.move_forward(speed=2)
             print("moving forward1")
+            if rover.front_edge.check_drive_ok() == False:
+                rover.move_forward(speed=0)                 # STOP
+                break
             sleep(1)
 
-        while (rover.back_edge.check_drive_ok() == True):
-            moveB(rover=rover,spd=2)
+        while True:
+            rover.move_backward(speed=2)
             print("moving back3")
+            if rover.back_edge.check_drive_ok() == False:
+                rover.move_backward(speed=0)                # STOP
+                break
             sleep(1)
             
         change_lane(rover=rover)
@@ -83,33 +71,33 @@ def sweep(rover:Rover):
         keyboard_shutdown()  
   
 
-def cleanArea(rover):
-    
+def start_clean(rover:Rover):
     print('check drone status')
-    rover.workingStatus = True
-    rover.setupAndArm()
-    rover.changeVehicleMode('GUIDED')
+    rover.working_status = True
+    rover.setup_arm()
+    rover.change_vehicle_mode('GUIDED')
     sleep(2)
     
     try:
-        moveF_L(rover,spd=2, d=int((length)))
+        rover.move_backward_dist(speed=2, dist=((3*length)/2))
         print("Undocking")
         #wait(5)
         #wait till drone takeoff
-        while(True):
-            moveB(rover,spd=2)
-            print("moving back1")
+        while True:
+            rover.move_forward(speed=2)
+            print("moving forward1")
             sleep(1)
 
-            if (rover.ul_back_edge.checkDriveOk() == True):
-                changeDirection(rover, 90)
+            if rover.front_edge.check_drive_ok() == False:
+                rover.change_yaw(math.radians(-90))
                 print("Orienting to corner")
                 sleep(1)
 
-            moveB(rover,spd=2)
+            rover.move_backward(speed=2)
             print("moving back1")
-            if (rover.ul_back_edge.checkDriveOk() == True):
+            if rover.back_edge.check_drive_ok() == False:
                 print("Corner Detected")
+                rover.move_backward(speed=0)
                 print("Sweep function called")
                 sweep(rover=rover)
                 break
