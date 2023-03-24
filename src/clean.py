@@ -3,8 +3,8 @@ from time import sleep
 import math
 from .Rover import Rover
 
-length = 45
-breadth = 30
+length = 0.45
+breadth = 0.30
 
 def change_lane(rover:Rover):
     print("Changing Lane")
@@ -79,11 +79,13 @@ def start_clean(rover:Rover):
     sleep(2)
     
     try:
+        print('Undocking')
         rover.move_backward_dist(speed=2, dist=((3*length)/2))
-        print("Undocking")
+        # print("Undocking")
         #wait(5)
         #wait till drone takeoff
         while True:
+            print('move Forward start')
             rover.move_forward(speed=2)
             print("moving forward1")
             sleep(1)

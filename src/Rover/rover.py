@@ -83,6 +83,7 @@ class Rover:
             if self.front_edge.check_drive_ok() == False:
                 self.vehicle.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(10, self.vehicle.target_system,
                         self.vehicle.target_component, mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED, int(0b110111000110), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+                return
                 
             system = self.vehicle.recv_match(type='LOCAL_POSITION_NED', blocking=True)
             current = system.x
@@ -107,6 +108,7 @@ class Rover:
             if self.front_edge.check_drive_ok() == False:
                 self.vehicle.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(10, self.vehicle.target_system,
                         self.vehicle.target_component, mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED, int(0b110111000110), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+                return
 
             system = self.vehicle.recv_match(type='LOCAL_POSITION_NED', blocking=True)
             current = system.x
