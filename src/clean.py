@@ -104,3 +104,6 @@ def start_clean(rover:Rover):
     
     except KeyboardInterrupt:
         keyboard_shutdown()
+
+if __name__ == '__main__':
+    pass

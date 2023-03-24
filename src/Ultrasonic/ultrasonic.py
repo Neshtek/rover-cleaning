@@ -58,3 +58,6 @@ class Ultrasonic:
                 pass
         print ("Measured Distance = %.1f cm" % edge_dist)
         time.sleep(0.1)
+
+if __name__ == '__main__':
+    pass

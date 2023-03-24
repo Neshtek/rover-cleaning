@@ -9,3 +9,6 @@ def get_serial():
     except:
         cpu_serial = "ERROR000000000"
     return cpu_serial
+
+if __name__ == '__main__':
+    pass
