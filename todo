@@ -1,0 +1,12 @@
+
+FAIL CHECKS
+
+Ultrasonic fail
+Ultrasonic garbage value
+communication lost PixHawk
+motor connection lost
+
+EDGE CASES
+
+Next lane narrower than rover
+Both utrasonic showing no surface

@@ -13,10 +13,11 @@ print("Heartbeat from system (system %u component %u)" %
 
 while 1:
       # msg = the_connection.recv_match(type='ATTITUDE', blocking=True)
-      pos = the_connection.recv_match(type='GLOBAL_POSITION_INT', blocking=True)
+      #pos = the_connection.recv_match(type='GLOBAL_POSITION_INT', blocking=True)
 
       # distance to next waypoint
-      msg = the_connection.recv_match(type='NAV_CONTROLLER_OUTPUT',blocking=True)
+      #msg = the_connection.recv_match(type='NAV_CONTROLLER_OUTPUT',blocking=True)
       
-      system = the_connection.recv_match(type='SYS_STATUS', blocking=True)
-      print(pos)
+      #system = the_connection.recv_match(type='SYS_STATUS', blocking=True)
+      data = the_connection.recv_match(type='COMMAND_ACK', blocking=True)
+      print(data)

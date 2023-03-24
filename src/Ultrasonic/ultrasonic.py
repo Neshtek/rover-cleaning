@@ -44,10 +44,10 @@ class Ultrasonic:
     def check_drive_ok(self):
         edge_dist = self.get_distance()    
         if edge_dist <= 10:
-            print ("Measured Distance = %.1f cm" % edge_dist)
+            #print ("Measured Distance = %.1f cm" % edge_dist)
             return True
         else:
-            print ("Measured Distance = %.1f cm" % edge_dist)
+            #print ("Measured Distance = %.1f cm" % edge_dist)
             return False
             time.sleep(1) #time too much
             d_edge = self.get_distance()

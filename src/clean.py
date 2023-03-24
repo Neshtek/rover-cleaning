@@ -26,19 +26,25 @@ def change_lane(rover:Rover):
             # No Further Lanes
             if rover.front_edge.check_drive_ok() == False:
                 print("No Further Lanes")
+                sleep(1)
                 rover.change_yaw(angle=theta)
                 print("changing direction due to no lanes!")
+                sleep(1)
                 rover.move_backward_dist(speed=2, dist=(length/2))
                 print("moving back4")
+                sleep(1)
                 print("odometry called")
-            
+                keyboard_shutdown()
+                
             # Available Lanes
             else:
                 rover.move_forward_dist(speed=2, dist=hypotenuse_dist)
                 print("moving forward2")
+                sleep(1)
                 rover.change_yaw(angle=theta)
                 rover.move_backward_dist(speed=2, dist=length)
                 print("moving back3")
+                sleep(1)
                 return
 
     except KeyboardInterrupt:
@@ -51,6 +57,7 @@ def sweep(rover:Rover):
         while True:
             rover.move_forward(speed=2)
             print("moving forward1")
+            sleep(1)
             if rover.front_edge.check_drive_ok() == False:
                 rover.move_forward(speed=0)                 # STOP
                 break
@@ -59,6 +66,7 @@ def sweep(rover:Rover):
         while True:
             rover.move_backward(speed=2)
             print("moving back3")
+            sleep(1)
             if rover.back_edge.check_drive_ok() == False:
                 rover.move_backward(speed=0)                # STOP
                 break
@@ -76,12 +84,13 @@ def start_clean(rover:Rover):
     rover.working_status = True
     rover.setup_arm()
     rover.change_vehicle_mode('GUIDED')
-    sleep(2)
+    sleep(1)
     
     try:
         print('Undocking')
         rover.move_backward_dist(speed=2, dist=((3*length)/2))
-        # print("Undocking")
+        print("undocked")
+        sleep(1)
         #wait(5)
         #wait till drone takeoff
         while True:
@@ -94,15 +103,19 @@ def start_clean(rover:Rover):
                 rover.change_yaw(math.radians(-90))
                 print("Orienting to corner")
                 sleep(1)
+                break
 
+        while True:
             rover.move_backward(speed=2)
             print("moving back1")
+            sleep(1)
             if rover.back_edge.check_drive_ok() == False:
                 print("Corner Detected")
+                sleep(1)
                 rover.move_backward(speed=0)
                 print("Sweep function called")
+                sleep(1)
                 sweep(rover=rover)
-                break
     
     except KeyboardInterrupt:
         keyboard_shutdown()

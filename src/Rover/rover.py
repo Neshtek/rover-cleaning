@@ -87,8 +87,8 @@ class Rover:
                 
             system = self.vehicle.recv_match(type='LOCAL_POSITION_NED', blocking=True)
             current = system.x
-            print('current head', current)
-            print('change head', change)
+            #print('current head', current)
+            #print('change head', change)
             
     def move_backward_dist(self, speed, dist=0):
         system = self.vehicle.recv_match(type='LOCAL_POSITION_NED', blocking=True)
@@ -112,8 +112,8 @@ class Rover:
 
             system = self.vehicle.recv_match(type='LOCAL_POSITION_NED', blocking=True)
             current = system.x
-            print('current head', current)
-            print('change head', change)
+            #print('current head', current)
+            #print('change head', change)
         
     def current_yaw(self):
         system = self.vehicle.recv_match(type='ATTITUDE', blocking=True)
@@ -121,7 +121,7 @@ class Rover:
         return angle
 
     def change_yaw(self, angle, speed=0):
-        print(angle) # Correct angle by adding abs difference in 180 degrees
+        #print(angle) # Correct angle by adding abs difference in 180 degrees
         system = self.vehicle.recv_match(type='ATTITUDE', blocking=True)
         initial = math.degrees(system.yaw)
         final = initial + math.degrees(angle)
