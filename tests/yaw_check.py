@@ -57,7 +57,7 @@ while True:
     else:
         change = abs(current - initial)
                 
-    if change >= 90:
+    if change >= 80:
         #the_connection.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(10, the_connection.target_system,
         #    the_connection.target_component, mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED , int(0b100111100111), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
         break
