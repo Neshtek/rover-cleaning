@@ -16,8 +16,8 @@ mode = 'GUIDED'
 mode_H = 'HOLD'
 mode_id_H = the_connection.mode_mapping()[mode_H]
 
-speed = 1
-dist = 0.5
+speed = 0.2
+dist = 0.3
 # Get mode ID
 mode_id = the_connection.mode_mapping()[mode]
 # Set new mode
@@ -53,6 +53,8 @@ the_connection.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_me
 while True:
     change = abs(current - initial)
     if change >= dist:
+        the_connection.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(10, the_connection.target_system,
+                         the_connection.target_component, mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED, int(0b110111000111), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)) 
         break
     the_connection.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(10, the_connection.target_system,
                 the_connection.target_component, mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED, int(0b110111000110), dist, 0, 0, speed, 0, 0, 0, 0, 0, 0, 0))

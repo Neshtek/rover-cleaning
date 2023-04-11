@@ -16,7 +16,7 @@ def change_lane(rover:Rover):
 
     try:
         while True:
-            rover.move_forward_dist(speed=1, dist=(length/2))
+            rover.move_forward_dist(speed=0.1, dist=(length/2))
             print("moving forward2")
             sleep(1)
             rover.change_yaw(angle=-(theta))
@@ -30,7 +30,7 @@ def change_lane(rover:Rover):
                 rover.change_yaw(angle=theta)
                 print("changing direction due to no lanes!")
                 sleep(1)
-                rover.move_backward_dist(speed=1, dist=(length/2))
+                rover.move_backward_dist(speed=0.1, dist=(length/2))
                 print("moving back4")
                 sleep(1)
                 print("odometry called")
@@ -38,11 +38,11 @@ def change_lane(rover:Rover):
                 
             # Available Lanes
             else:
-                rover.move_forward_dist(speed=1, dist=hypotenuse_dist)
+                rover.move_forward_dist(speed=0.1, dist=hypotenuse_dist)
                 print("moving forward2")
                 sleep(1)
                 rover.change_yaw(angle=theta)
-                rover.move_backward_dist(speed=1, dist=length)
+                rover.move_backward_dist(speed=0.1, dist=length)
                 print("moving back3")
                 sleep(1)
                 return
@@ -55,20 +55,20 @@ def sweep(rover:Rover):
     sleep(1)
     try:
         while True:
-            rover.move_forward(speed=1)
+            rover.move_forward(speed=0.1)
             print("moving forward1")
             sleep(1)
             if rover.front_edge.check_drive_ok() == False:
-                rover.move_forward(speed=1)                 # STOP
+                rover.move_forward(speed=0.1)                 # STOP
                 break
             sleep(1)
 
         while True:
-            rover.move_backward(speed=1)
+            rover.move_backward(speed=0.1)
             print("moving back3")
             sleep(1)
             if rover.back_edge.check_drive_ok() == False:
-                rover.move_backward(speed=1)                # STOP
+                rover.move_backward(speed=0.1)                # STOP
                 break
             sleep(1)
             
@@ -88,14 +88,14 @@ def start_clean(rover:Rover):
     
     try:
         print('Undocking')
-        rover.move_backward_dist(speed=1, dist=((3*length)/2))
+        rover.move_backward_dist(speed=0.1, dist=((3*length)/2))
         print("undocked")
         sleep(1)
         #wait(5)
         #wait till drone takeoff
         while True:
             print('move Forward start')
-            rover.move_forward(speed=1)
+            rover.move_forward(speed=0.1)
             print("moving forward1")
             sleep(1)
 
@@ -106,13 +106,13 @@ def start_clean(rover:Rover):
                 break
 
         while True:
-            rover.move_backward(speed=1)
+            rover.move_backward(speed=0.1)
             print("moving back1")
             sleep(1)
             if rover.back_edge.check_drive_ok() == False:
                 print("Corner Detected")
                 sleep(1)
-                rover.move_backward(speed=1)
+                rover.move_backward(speed=0.1)
                 print("Sweep function called")
                 sleep(1)
                 sweep(rover=rover)
