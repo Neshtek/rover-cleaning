@@ -1,5 +1,8 @@
 from pymavlink import mavutil
+from Rover import Rover
+from Ultrasonic import Ultrasonic
 
+Rover.front_edge = Ultrasonic(21,20)
 the_connection = mavutil.mavlink_connection('127.0.0.1:14550')
 
 the_connection.wait_heartbeat()
@@ -29,6 +32,11 @@ the_connection.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_me
 while 1:
     the_connection.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(10, the_connection.target_system,
                          the_connection.target_component, mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED, int(0b110111000111), 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0))
+    if Rover.front_edge.check_drive_ok() == False:
+        the_connection.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(10, the_connection.target_system,
+                the_connection.target_component, mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED, int(0b110111000110), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+        print('Edge detected')
+        break
     msg = the_connection.recv_match(
         type='LOCAL_POSITION_NED', blocking=True)
     print(msg)

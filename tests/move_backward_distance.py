@@ -48,7 +48,7 @@ system = the_connection.recv_match(type='LOCAL_POSITION_NED', blocking=True)
 initial = system.x
 current = initial
 the_connection.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(10, the_connection.target_system,
-                         the_connection.target_component, mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED, int(0b11011100111), 0, 0, 0, -(speed), 0, 0, 0, 0, 0, 0, 0))
+                         the_connection.target_component, mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED, int(0b11011100111), dist, 0, 0, -(speed), 0, 0, 0, 0, 0, 0, 0))
 
 while True:
     change = abs(current - initial)
@@ -57,7 +57,7 @@ while True:
                          the_connection.target_component, mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED, int(0b110111000111), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)) 
         break
     the_connection.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(10, the_connection.target_system,
-                         the_connection.target_component, mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED, int(0b11011100111), 0, 0, 0, -(speed), 0, 0, 0, 0, 0, 0, 0))
+                         the_connection.target_component, mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED, int(0b11011100111), dist, 0, 0, -(speed), 0, 0, 0, 0, 0, 0, 0))
     print('moving backward')
     
     if Rover.back_edge.check_drive_ok() == False:

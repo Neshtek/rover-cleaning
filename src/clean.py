@@ -92,9 +92,11 @@ def start_clean(rover:Rover):
     try:
         print('Undocking')
         #rover.move_backward_dist(speed=0.1, dist=((3*length)/2))
-        rover.move_backward(speed=0.1)
+        # // Changes made here
+        #while rover.back_edge.check_drive_ok() == True:
+        rover.move_backward_dist(speed=0.1,dist=0.3)
         print("undocked")
-        sleep(1)
+        sleep(2)
         #wait(5)
         #wait till drone takeoff
         while True:
