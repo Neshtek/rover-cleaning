@@ -5,14 +5,17 @@ from .Rover import Rover
 
 length = 0.45
 breadth = 0.30
+hypotenuse_dist = math.sqrt(((length/2) ** 2) + (breadth ** 2))
+theta = math.atan(breadth / (length/2))
+
 
 def change_lane(rover:Rover):
     print("Changing Lane")
     sleep(1)
     # Calculated values for lane change diagonal distance
-    hypotenuse_dist = math.sqrt(((length/2) ** 2) + (breadth ** 2))
+    #hypotenuse_dist = math.sqrt(((length/2) ** 2) + (breadth ** 2))
     # Calculated angle for lane change
-    theta = math.atan(breadth / (length/2))
+    #theta = math.atan(breadth / (length/2))
 
     try:
         while True:
@@ -88,7 +91,8 @@ def start_clean(rover:Rover):
     
     try:
         print('Undocking')
-        rover.move_backward_dist(speed=0.1, dist=((3*length)/2))
+        #rover.move_backward_dist(speed=0.1, dist=((3*length)/2))
+        rover.move_backward(speed=0.1)
         print("undocked")
         sleep(1)
         #wait(5)

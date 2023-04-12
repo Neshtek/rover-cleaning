@@ -65,7 +65,7 @@ class Rover:
         self.vehicle.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(10, self.vehicle.target_system,
                         self.vehicle.target_component, mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED, int(0b11011100111), 0, 0, 0, -(speed), 0, 0, 0, 0, 0, 0, 0))
     
-    def move_forward_dist(self, speed, dist=0):
+    def move_forward_dist(self, speed, dist):
         system = self.vehicle.recv_match(type='LOCAL_POSITION_NED', blocking=True)
 
         initial = system.x
@@ -90,7 +90,7 @@ class Rover:
             #print('current head', current)
             #print('change head', change)
             
-    def move_backward_dist(self, speed, dist=0):
+    def move_backward_dist(self, speed, dist):
         system = self.vehicle.recv_match(type='LOCAL_POSITION_NED', blocking=True)
 
         initial = system.x
@@ -105,7 +105,7 @@ class Rover:
             self.vehicle.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(10, self.vehicle.target_system,
                         self.vehicle.target_component, mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED, int(0b110111000110), dist, 0, 0, -(speed), 0, 0, 0, 0, 0, 0, 0))
 
-            if self.front_edge.check_drive_ok() == False:
+            if self.back_edge.check_drive_ok() == False:
                 self.vehicle.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(10, self.vehicle.target_system,
                         self.vehicle.target_component, mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED, int(0b110111000110), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
                 return
@@ -131,7 +131,7 @@ class Rover:
         
         while True:
             self.vehicle.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(10, self.vehicle.target_system,
-                        self.vehicle.target_component, mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED , int(0b100111100111), 0, 0, 0, (speed), 0, 0, 0, 0, 0, angle, 0))
+                        self.vehicle.target_component, mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED , int(0b100111100111), 0, 0, 0, (speed), 0, 0, 0, 0, 0, (angle/6), 0))
             
             system = self.vehicle.recv_match(type='ATTITUDE', blocking=True)
             current = math.degrees(system.yaw)
@@ -151,7 +151,7 @@ class Rover:
             else:
                 change = abs(current - initial)
             
-            if change >= math.degrees(angle):
+            if change >= 90:
                 break
             
             print('initial head', initial)

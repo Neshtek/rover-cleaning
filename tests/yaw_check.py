@@ -12,7 +12,7 @@ print("Heartbeat from system (system %u component %u)" %
 
 mode = 'GUIDED'
 speed = 0
-angle = 0.785
+angle = 1.57
 # Get mode ID
 mode_id = the_connection.mode_mapping()[mode]
 # Set new mode
@@ -37,7 +37,7 @@ current = initial
         
 while True:
     the_connection.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(10, the_connection.target_system,
-                        the_connection.target_component, mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED , int(0b100111100111), 0, 0, 0, (speed), 0, 0, 0, 0, 0, (angle), 0))
+                        the_connection.target_component, mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED , int(0b100111100111), 0, 0, 0, (speed), 0, 0, 0, 0, 0, (angle/6), 0))
 
     system = the_connection.recv_match(type='ATTITUDE', blocking=True)
     current = math.degrees(system.yaw)
@@ -53,11 +53,12 @@ while True:
             change = initial - current
         else:
             neg_change = 180 - current
-        change += neg_change
+            change += neg_change
     else:
         change = abs(current - initial)
                 
-    if change >= 55:
+    #if change >= 90:
+    if change >= math.degrees(angle):    
         #the_connection.mav.send(mavutil.mavlink.MAVLink_set_position_target_local_ned_message(10, the_connection.target_system,
         #    the_connection.target_component, mavutil.mavlink.MAV_FRAME_BODY_OFFSET_NED , int(0b100111100111), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
         break
